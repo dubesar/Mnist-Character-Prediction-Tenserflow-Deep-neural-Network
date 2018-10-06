@@ -2,9 +2,9 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 mnist=input_data.read_data_sets("/tmp/data/",one_hot=True)
 
-n_nodes_h1=1000
-n_nodes_h2=600
-n_nodes_h3=500
+n_nodes_h1=3
+n_nodes_h2=3
+n_nodes_h3=3
 
 n_classes=10
 batch_size=50
@@ -26,20 +26,20 @@ def NeuralNetwork(data):
   l2=tf.add(tf.matmul(l1,hidden2['weights']),hidden2['biases'])
   l2=tf.nn.relu(l2)
   l3=tf.add(tf.matmul(l2,hidden3['weights']),hidden3['biases'])
-  l3=tf.nn.relu(l2)
+  l3=tf.nn.relu(l3)
   output=tf.add(tf.matmul(l3,output_layer['weights']),output_layer['biases'])
   output=tf.nn.relu(output)
   return output
 def train_neural_network(x):
   prediction=NeuralNetwork(x)
-  cost=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(prediction,y))
+  cost=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
   
   optimizer=tf.train.AdamOptimizer().minimize(cost)
   
   hm_epochs=10
   
-  with tf.Session as sess:
-    sess.run(tf.initialize_all_variables())
+  with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
     
     for epochs in range(hm_epochs):
       epoch_loss=0
