@@ -13,14 +13,14 @@ x=tf.placeholder('float',[None,784])
 y=tf.placeholder('float')
 
 def NeuralNetwork(data):
-  hidden1={'weights':tf.Variable(tf.random.normal([784,n_nodes_h1])),
-          'biases':tf.Variable(tf.random.normal([n_nodes_h1]))}
-  hidden2={'weights':tf.Variable(tf.random.normal([n_nodes_h1,n_nodes_h2])),
-          'biases':tf.Variable(tf.random.normal([n_nodes_h2]))}
-  hidden3={'weights':tf.Variable(tf.random.normal([n_nodes_h2,n_nodes_h3])),
-          'biases':tf.Variable(tf.random.normal([n_nodes_h3]))}
-  output_layer={'weights':tf.Variable(tf.random.normal([n_nodes_h3,n_classes])),
-          'biases':tf.Variable(tf.random.normal([n_classes]))}
+  hidden1={'weights':tf.Variable(tf.random_normal([784,n_nodes_h1])),
+          'biases':tf.Variable(tf.random_normal([n_nodes_h1]))}
+  hidden2={'weights':tf.Variable(tf.random_normal([n_nodes_h1,n_nodes_h2])),
+          'biases':tf.Variable(tf.random_normal([n_nodes_h2]))}
+  hidden3={'weights':tf.Variable(tf.random_normal([n_nodes_h2,n_nodes_h3])),
+          'biases':tf.Variable(tf.random_normal([n_nodes_h3]))}
+  output_layer={'weights':tf.Variable(tf.random_normal([n_nodes_h3,n_classes])),
+          'biases':tf.Variable(tf.random_normal([n_classes]))}
   l1=tf.add(tf.matmul(data,hidden1['weights']),hidden1['biases'])
   l1=tf.nn.relu(l1)
   l2=tf.add(tf.matmul(l1,hidden2['weights']),hidden2['biases'])
@@ -29,8 +29,6 @@ def NeuralNetwork(data):
   l3=tf.nn.relu(l2)
   output=tf.add(tf.matmul(l3,output_layer['weights']),output_layer['biases'])
   output=tf.nn.relu(output)
-  
-  
   return output
 def train_neural_network(x):
   prediction=NeuralNetwork(x)
@@ -52,3 +50,5 @@ def train_neural_network(x):
       correct=tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
       accuracy=tf.reduce_mean(tf.cast(correct,'float'))
       print(accuracy.eval({x:mnist.test.images,y:mnist.test.labels}))
+
+train_neural_network(x)
